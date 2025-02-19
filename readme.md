@@ -16,9 +16,11 @@ cd adv_youtube
 1. **Exercise 1**: read argument from os.
 2. **Exercise 2**: calc AVG.
 3. **Exercise 3**: simple cat linux command with go.
-3. **Exercise 4**: term counter.
-3. **Exercise 5**: simple wc linux command with go.
-3. **Exercise 6**: extract and count string and image in html files.
+4. **Exercise 4**: term counter.
+5. **Exercise 5**: simple wc linux command with go.
+6. **Exercise 6**: extract and count string and image in html files.
+7. **Exercise 7**: simple http server.
+
 
 ## Contributing
 
