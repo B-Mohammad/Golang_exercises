@@ -20,6 +20,8 @@ cd adv_youtube
 5. **Exercise 5**: simple wc linux command with go.
 6. **Exercise 6**: extract and count string and image in html files.
 7. **Exercise 7**: simple http server.
+8. **Exercise 8**: search in comic dataset.
+9. **Exercise 9**: simple web server.
 
 
 ## Contributing
