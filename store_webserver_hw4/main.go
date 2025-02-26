@@ -12,7 +12,7 @@ type dolors float64
 type dateBase map[string]dolors
 
 func (d dolors) String() string {
-	return fmt.Sprintf("%.2f$", float64(d))
+	return fmt.Sprintf("%.2f$", d)
 }
 
 func (db dateBase) list(w http.ResponseWriter, r *http.Request) {
