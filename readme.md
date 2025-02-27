@@ -22,6 +22,7 @@ cd adv_youtube
 7. **Exercise 7**: simple http server.
 8. **Exercise 8**: search in comic dataset.
 9. **Exercise 9**: simple web server.
+10. **Exercise 10**: concurrency.
 
 
 ## Contributing
