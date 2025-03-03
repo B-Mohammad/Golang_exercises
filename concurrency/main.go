@@ -1,47 +1,32 @@
 package main
 
-import (
-	"fmt"
-)
+// import (
+// 	"log"
+// 	"time"
+// )
 
-func generate(c1 chan int, limit int) {
-	for i := 2; i <= limit; i++ {
-		c1 <- i
-	}
-	close(c1)
-}
+// func main() {
+// 	chans := []chan int{
+// 		make(chan int),
+// 		make(chan int),
+// 	}
 
-func filter(source chan int, dst chan int, prime int) {
-	for v := range source {
-		if v%prime != 0 {
-			dst <- v
-		}
-	}
-	close(dst)
-}
+// 	for i, v := range chans {
+// 		go func(ch chan int, i int) {
+// 			for {
+// 				time.Sleep(time.Duration(i) * time.Second)
+// 				ch <- i
+// 			}
+// 		}(v, i+1)
+// 	}
 
-func sav(limit int) {
-	ch := make(chan int)
-	go generate(ch, limit)
+// 	for i := 0; i < 12; i++ {
+// 		select {
+// 		case r0 := <-chans[0]:
+// 			log.Printf("goroutine %d %d", i, r0)
 
-	for {
-		prime, ok := <-ch
-		if !ok {
-			break
-		}
-
-		ch2 := make(chan int)
-		go filter(ch, ch2, prime)
-		ch = ch2
-
-		fmt.Print(prime, " ")
-
-	}
-	fmt.Println()
-}
-
-func main() {
-
-	sav(10)
-
-}
+// 		case r1 := <-chans[1]:
+// 			log.Printf("goroutine %d %d", i, r1)
+// 		}
+// 	}
+// }

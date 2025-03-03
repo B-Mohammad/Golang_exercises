@@ -24,7 +24,6 @@ cd adv_youtube
 9. **Exercise 9**: simple web server.
 10. **Exercise 10**: concurrency.
 
-
 ## Contributing
 
 If you have suggestions or improvements, feel free to open an issue or submit a pull request.

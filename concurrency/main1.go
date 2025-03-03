@@ -27,6 +27,7 @@ package main
 
 // func main() {
 // 	s := time.Now()
+// 	timeout := time.After(1 * time.Second)
 
 // 	urls := []string{
 // 		"https://www.golang.org/",
@@ -43,13 +44,19 @@ package main
 // 	}
 
 // 	for range urls {
-// 		res := <-ch
-// 		if res.err != nil {
-// 			log.Printf("%-50s %s\n", res.url, res.err)
-// 		} else {
-// 			log.Printf("%-50s %s\n", res.url, res.latency)
 
+// 		select {
+// 		case res := <-ch:
+// 			if res.err != nil {
+// 				log.Printf("%-50s %s\n", res.url, res.err)
+// 			} else {
+// 				log.Printf("%-50s %s\n", res.url, res.latency)
+
+// 			}
+// 		case <-timeout:
+// 			log.Fatalln("timeout")
 // 		}
+
 // 	}
 
 // 	log.Println(time.Since(s).Round(time.Millisecond))
