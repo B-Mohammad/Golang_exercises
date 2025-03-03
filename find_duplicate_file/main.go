@@ -9,6 +9,7 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
+	"sync"
 )
 
 type pair struct {
@@ -34,49 +35,57 @@ func calcHash(path string) pair {
 	return pair{path, fmt.Sprintf("%x", hash.Sum(nil))}
 }
 
-func searchFiles(root string, pathC chan<- string) error {
+func searchFiles(root string, limitC chan bool, pairC chan<- pair, wg *sync.WaitGroup) error {
+	defer wg.Done()
 	search := func(path string, info fs.FileInfo, err error) error {
 
 		//ignore err param
 		if err != nil {
 			return err
 		}
+		if info.Mode().IsDir() && path != root {
+			wg.Add(1)
+			go searchFiles(path, limitC, pairC, wg)
+			return filepath.SkipDir
+		}
 
 		if info.Mode().IsRegular() && info.Size() > 0 {
-			pathC <- path
+			wg.Add(1)
+			go processF(path, pairC, wg, limitC)
 
 		}
 
 		return nil
 	}
 
+	limitC <- true
+	defer func() { <-limitC }()
+
 	return filepath.Walk(root, search)
 
 }
 
 func run(root string) result {
-	pathC := make(chan string)
-	doneC := make(chan bool)
-	pairC := make(chan pair)
-	resultC := make(chan result)
-
 	workers := 2 * runtime.GOMAXPROCS(0)
 
-	for range workers {
-		go processF(pathC, pairC, doneC)
-	}
+	limitC := make(chan bool, workers)
+	pairC := make(chan pair)
+	resultC := make(chan result)
+	wg := new(sync.WaitGroup)
 
 	go collectResults(resultC, pairC)
 
-	if err := searchFiles(root, pathC); err != nil {
+	wg.Add(1)
+	if err := searchFiles(root, limitC, pairC, wg); err != nil {
 		return nil
 	}
 
-	close(pathC)
+	wg.Wait()
+	// close(pathC)
 
-	for range workers {
-		<-doneC
-	}
+	// for range workers {
+	// 	<-doneC
+	// }
 
 	close(pairC)
 
@@ -94,11 +103,13 @@ func collectResults(resultC chan<- result, pairC <-chan pair) {
 	resultC <- result
 }
 
-func processF(pathC <-chan string, pairC chan<- pair, doneC chan<- bool) {
-	for p := range pathC {
-		pairC <- calcHash(p)
-	}
-	doneC <- true
+func processF(path string, pairC chan<- pair, wg *sync.WaitGroup, limit chan bool) {
+	defer wg.Done()
+
+	limit <- true
+	defer func() { <-limit }()
+
+	pairC <- calcHash(path)
 
 }
 
