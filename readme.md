@@ -23,6 +23,7 @@ cd adv_youtube
 8. **Exercise 8**: search in comic dataset.
 9. **Exercise 9**: simple web server.
 10. **Exercise 10**: concurrency.
+11. **Exercise 11**: search for duplicate files in a root directory.
 
 ## Contributing
 
