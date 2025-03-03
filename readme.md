@@ -24,6 +24,7 @@ cd adv_youtube
 9. **Exercise 9**: simple web server.
 10. **Exercise 10**: concurrency.
 11. **Exercise 11**: search for duplicate files in a root directory.
+12. **Exercise 12**: add mutex to hw4 and test in in hw5.
 
 ## Contributing
 
